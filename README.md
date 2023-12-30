@@ -1,5 +1,6 @@
-# DevOps Playground 21 - Google Kubernetes Engine
+# Learning Google Kubernetes Engine
 ![](images/logo_gcp_vertical_rgb.png)
+
 
 - [Overview](#overview)
 - [Hands On!](#hands-on)
@@ -19,6 +20,7 @@
   - [Rollback: Roll back to a previous Stable deployment version](#rollback-to-previous-app-version)
   - [Cleanup](#cleanup)
 
+
 # Overview
 In this document, we are going to create a Kubernetes cluster on Google Cloud, using preemptible instances. 
 This document provides an overview and step-by-step instructions for getting started with Google Cloud Platform (GCP) 
@@ -29,6 +31,7 @@ service, and scaling the deployment for redundancy.
 You'll also discover how to perform rolling updates to deploy a new application version and rollback to a previous stable 
 deployment version when needed. 
 Finally, the document includes cleanup instructions to help you manage your GCP resources efficiently.
+
 
 
 # Hands On!
@@ -49,15 +52,18 @@ Once everything is complete, you will be taken to this screen.
 
 ![](images/gcp-getting-started-2.png)
 
+
 ### Select your project
 
 Select your project at the top, you will see a screen similar to this one.
 ![](images/project-home.png)
 
 
+
 ## Google Kubernetes Engine
 Navigate to Kubernetes engine, using the hamburger menu on the left hand side.
 ![](images/gke.png)
+
 
 ## Start the Google Cloud Shell
 Google Cloud Shell is an interactive shell environment for Google Cloud Platform. It makes it easy for you to manage your projects and resources without having to install the Google Cloud SDK and other tools on your system. With Cloud Shell, the Cloud SDK gcloud command-line tool and other utilities you need are always available when you need them.
@@ -75,6 +81,7 @@ Cloud Shell provides the following:
 ![](images/cloud-shell-button.png)
 ![](images/cloud-shell-start.png)
 
+
 ## Create your GKE Cluster
 
 If you just created your new account, it will take 5-10 minutes before you're able to create a new cluster.
@@ -89,10 +96,13 @@ gcloud container clusters create "playground"   --project ${PROJECT_ID}   --regi
 gcloud container clusters get-credentials playground --zone us-east1-b --project ${PROJECT_ID}
 ```
 
+
 This command will take roughly 5 minutes to complete.
 Remember, if you open a new Cloud Shell, you will need to run the `export PROJECT_ID="$(gcloud config get-value project -q)"` command again.
 
+
 ![](images/gke-cluster-created.png)
+
 
 In the meantime, in the menu, open Monitoring, under Stackdriver, and enable it for your account if it wasn't done already. This will allow it to monitor your cluster in the background.
 
@@ -107,6 +117,7 @@ In the meantime, in the menu, open Monitoring, under Stackdriver, and enable it 
 * `--min-nodes "1" --max-nodes "3"`: The cluster can scale between 1 and 3 nodes
 * `--addons HorizontalPodAutoscaling,HttpLoadBalancing`: Required to allow the cluster to scale the pods and use the Google Cloud Load Balance.
 * `--enable-autorepair`: Let GKE repair unhealthy nodes
+
 
 ## Deploy hello-app web application
 
@@ -123,6 +134,7 @@ Run this command to see the newly created Deployment running in your Kubernetes 
 `kubectl get pods -o wide`
 
 Run this command to see the newly created pod(s) of the "web-app" depliyment running in your Kubernetes cluster, along with additional details in wide output format. Pods are the smallest deployable units in Kubernetes, representing a single instance of a running process. The wide output format provides additional information such as the node on which each pod is scheduled, which can be helpful for troubleshooting and debugging.
+
 
 
 ## Expose the deployment
@@ -145,7 +157,9 @@ This command uses the curl utility to make an HTTP request to the external IP ad
 We can alternatively copy the External IP and access it in a browser tab.
 
 Here you go, your app is working!
+
 ![](images/app-working.png)
+
 
 
 ## Scale the deployment
@@ -157,6 +171,7 @@ Run this command to scale the Kubernetes deployment named "web-app" to have 3 re
 `kubectl get pods --watch`
 
 It watches and displays information about the pods running in your Kubernetes cluster in real-time. By using the --watch flag, it continuously updates and shows the status of the pods. When you scale your deployment with the previous command, this command will reflect the changes by showing the creation and status updates of the new pods as they are added to the cluster. 
+
 
 
 ## Deploying new application version using Rolling update
@@ -175,7 +190,9 @@ Alternatively, we can run the following command:
 This command opens the configuration for a Kubernetes deployment named "web-app" in your default text editor. You can modify the deployment's configuration interactively, including properties like the number of replicas, container images details and version, and other settings. Once you've made your changes and saved the file, Kubernetes will automatically apply the updates to the deployment, ensuring that your changes take effect. This is a convenient way to make on-the-fly adjustments to your application's deployment configuration.
 
 We can make both the relica & image level changes as follows:
+
 ![](images/kubectl-edit.png)
+
 
 
 ## Roll back to a previous Stable deployment Version
@@ -195,9 +212,15 @@ This command allows you to undo a deployment update and roll back to a specific 
 
 ## Cleanup
 Delete the Deployment and Service
+
 `kubectl delete services,deployment web-app`
 
+This command deletes both the Kubernetes service and deployment named "web-app" in one go. The kubectl delete command is used to remove resources, and by specifying both "services" and "deployment," it ensures that both the service and the deployment associated with the "web-app" application are deleted. This is a convenient way to clean up resources when you no longer need them, ensuring that both the service and deployment are removed from your cluster.
+
 Delete the playground cluster
+
 `gcloud container clusters delete playground --zone us-west1`
+
+It will delete our "playground" GKE Cluster located in the "us-west1" zone. It instructs Google Cloud to remove all the resources associated with the cluster, including nodes, pods, and services. Please use this command to completely delete your GKE cluster to stop incurring charges in Google Cloud after completion of your lab.
 
 
