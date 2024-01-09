@@ -86,16 +86,16 @@ Cloud Shell provides the following:
 
 If you just created your new account, it will take 5-10 minutes before you're able to create a new cluster.
 
-### Command
+### Commands
 
 ```
-export PROJECT_ID="$(gcloud config get-value project -q)"
+export PROJECT_ID="$(gcloud config get-value project -q)"   :   This command sets an environment variable PROJECT_ID with the current active Google Cloud project ID as retrieved from your gcloud configuration.
 
-gcloud container clusters create "playground"   --project ${PROJECT_ID}   --region "us-west1"   --machine-type "e2-micro"   --preemptible   --num-nodes "3"   --network "default"   --min-nodes "1"   --max-nodes "3"   --addons HorizontalPodAutoscaling,HttpLoadBalancing   --enable-autorepair
+gcloud container clusters create "playground" --project ${PROJECT_ID} --region "us-west1"   :   Creates a new GKE cluster named "playground" in the "us-west1" region using the project ID specified in the PROJECT_ID environment variable.
 
-gcloud container clusters get-credentials playground --zone us-east1-b --project ${PROJECT_ID}
+gcloud container clusters get-credentials playground --region us-west1 --project ${PROJECT_ID}  :   Configures kubectl to use the credentials for the "playground" GKE cluster, allowing you to interact with your cluster using kubectl commands.
+
 ```
-
 
 This command will take roughly 5 minutes to complete.
 Remember, if you open a new Cloud Shell, you will need to run the `export PROJECT_ID="$(gcloud config get-value project -q)"` command again.
