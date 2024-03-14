@@ -1,3 +1,4 @@
+
 # Node Affinity and Anti-Affinity in Google Kubernetes Engine (GKE)
 
 ## Introduction
